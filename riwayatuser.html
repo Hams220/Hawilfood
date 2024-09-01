@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            background-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h2 {
+            color: #343a40;
+        }
+
+        .bi {
+            color: white;
+        }
+
+        .card {
+            width: 300px;
+            height: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            position: relative;
+            padding: 10px;
+        }
+
+        .list-group-item:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+        .order-date {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .order-total {
+            font-size: 1.1rem;
+            color: #495057;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .action-btn {
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .right-post {
+            display: flex;
+            position: absolute;
+            bottom: 20px;
+            right: 10px;
+        }
+
+        .flex {
+            display: flex;
+            justify-content: space-evenly;
+            gap: 5px;
+        }
+
+        .card h5 {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Order History</h2>
+        <div id="order-history" class="flex" style="justify-content: left;flex-wrap: wrap;"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade printable" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalContent">
+                    <!-- Content will be loaded here dynamically -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" id="printBtn">Cetak</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification">New orders have been added!</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let previousData = {};
+
+        function fetchOrderHistory() {
+            const apiUrl = "https://posdata-16c78-default-rtdb.firebaseio.com/history.json";
+            const orderHistoryContainer = document.getElementById("order-history");
+            const userEmail = JSON.parse(localStorage.getItem('user'));
+            const email = userEmail.email;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && JSON.stringify(data) !== JSON.stringify(previousData)) {
+                        orderHistoryContainer.innerHTML = ''; // Clear existing content
+                        Object.keys(data).forEach(key => {
+                            const order = data[key];
+                            console.log(order.email, email)
+                            // Filter berdasarkan email user
+                            if (order.email === email) {
+                                const orderItem = document.createElement("div");
+                                orderItem.className = "card bg-primary-subtle";
+
+                                const produkDetails = Array.isArray(order.produk)
+                                    ? order.produk.map(item => `${item.nampro} (x${item.qtypro})`).join('<br>- ')
+                                    : "No details available";
+
+                                orderItem.innerHTML = `
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <b class="mb-1">Order #${key}</b>
+                                    </div>
+                                    <h5>Detail Order:</h5>
+                                        <div style="margin-left:15px;">- ${produkDetails}</div><br>
+                                    <p class="mb-1 order-total"><strong>Total:</strong> ${order.totalBayar}</p>
+                                    <div class="right-post">
+                                        <button class="action-btn btn btn-primary" id="print-${key}">
+                                            ${order.statusbayar}  
+                                        </button>
+                                    </div>
+                                    <small class="order-date">${new Date(order.waktuTransaksi).toLocaleDateString()}</small>
+                                `;
+
+                                orderItem.addEventListener("click", () => {
+                                    const modalContent = document.getElementById('modalContent');
+
+                                    const produkDetailsModal = Array.isArray(order.produk)
+                                        ? order.produk.map(item => `                             
+                                            <div class="flex">
+                                                <div>
+                                                    <label for="NamaPembeli">Nama Produk</label>
+                                                    <input type="text" name="namaProduk" id="NamaProduk" value="${item.nampro}" class="form-control" disabled>
+                                                </div>
+                                                <div>
+                                                    <label for="Harga">Harga</label>
+                                                    <input type="number" name="harga" id="Harga" value="${item.harpro}" class="form-control" disabled>
+                                                </div>
+                                                <div>
+                                                    <label for="qty">QTY</label>
+                                                    <input type="text" name="qty" id="qty" value="${item.qtypro}" class="form-control" disabled>
+                                                </div>
+                                            </div>
+                                        `).join('<br>')
+                                        : "No products available";
+
+                                    modalContent.innerHTML = `
+                                        <p>Nama penerima: ${order.namaPenerima}<br></p>
+                                        <p>Alamat: ${order.alamatLengkap}, ${order.desa}, ${order.kecamatan}<br></p>
+                                        <p>Nomor Telepon: ${order.nomorTelepon}<br></p>
+                                        <p>Waktu Transaksi: ${new Date(order.waktuTransaksi).toLocaleDateString()}<br></p>
+                                        <p>Catatan: ${order.catatan || "Tidak ada"}<br></p>
+                                        <p>Status Bayar: ${order.statusbayar}<br></p>
+                                        <h5>Detail Produk:</h5>
+                                        ${produkDetailsModal}<br/>
+                                        <h5>Total Bayar: ${order.totalBayar}</h5><br>
+                                    `;
+                                    const orderModal = new bootstrap.Modal(document.getElementById('orderModal'));
+                                    orderModal.show();
+
+                                    // Set up the print button to redirect to struk.html with the order key
+                                    document.getElementById('printBtn').onclick = function() {
+                                        cetak(key);
+                                    };
+                                });
+
+                                orderHistoryContainer.appendChild(orderItem);
+                            }
+                        });
+
+                        showNotification();
+                        previousData = data;
+                    } else if (!data) {
+                        orderHistoryContainer.innerHTML = `<p class="text-center">No orders found.</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching order history:', error);
+                    alert('Failed to load order history. Please try again later.');
+                });
+        }
+
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Fetch data every 10 seconds
+        setInterval(fetchOrderHistory, 10000);
+
+        // Initial fetch
+        fetchOrderHistory();
+
+        function cetak(key) {
+            window.location.href = `struk.html?key=${key}`;
+        }
+    </script>
+</body>
+
+</html>
