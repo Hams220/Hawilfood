@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hawil Food</title>
+  <title>User Demo</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <!-- Bootstrap CSS -->
@@ -99,18 +99,12 @@
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
-    /* Responsive Adjustments */
-    @media (max-width: 576px) {
-      .cardbutton {
-        width: 50px;
-        height: 50px;
-      }
+    
 
       .rounded {
         width: 50px;
         height: 50px;
       }
-    }
   </style>
 </head>
 
@@ -225,7 +219,7 @@
           const produk = data[key];
           const produkDiv = document.createElement('div');
           produkDiv.className = 'card produkdisplay animate__animated animate__fadeInUp';
-          produkDiv.style.width = '10rem';
+          produkDiv.style.width = '12rem';
 
           produkDiv.innerHTML = `
             <img src="https://i.ibb.co.com/yh4P9qZ/id-11134207-7qul3-lki1a5e8fpucd3.jpg" class="card-img-top" alt="${produk.namaProduk}" loading="lazy">
@@ -292,7 +286,7 @@
           produkDiv.innerHTML = `
             <div class="d-flex justify-content-between align-items-center p-2">
               <div class="d-flex align-items-center">
-                <img class="imgtroli me-2" src="https://i.ibb.co.com/yh4P9qZ/id-11134207-7qul3-lki1a5e8fpucd3.jpg" alt="${produk.namaProduk}" loading="lazy">
+                <img class="imgtroli me-2" src="https://i.ibb.co/yh4P9qZ/id-11134207-7qul3-lki1a5e8fpucd3.jpg" alt="${produk.namaProduk}" loading="lazy">
                 <span>${produk.namaProduk}</span>
               </div>
               <b>${rupiah(produk.harga)}</b>
