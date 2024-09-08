@@ -16,7 +16,7 @@ body{
     transition: height 0.3s ease;
 }
 .bg-nav h5{
-    width: 50%;
+    width: 60%;
 }
 .cardsaldo{
     z-index: 1000;
