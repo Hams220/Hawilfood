@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart List</title>
+    <link rel="stylesheet" href="bootstrap-5.3.3-dist/css/bootstrap.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            font-size: medium;
+        }
+
+        .card {
+            border-radius: 1rem;
+        }
+
+        .btn-custom {
+            background-color: #ffc107;
+            color: white;
+            border-radius: 2rem;
+        }
+        .select{
+            width: 70px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Cart List Screen -->
+    <div class="d-flex flex-column align-items-center justify-content-center p-2">
+        <div class="card w-100 p-4 shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <i class="fas fa-arrow-left fa-lg"></i>
+                <i class="fas fa-trash fa-lg"></i>
+            </div>
+            <h5 class="mt-4">My Cart List</h5>
+            <div id="address" class="border p-2 mb-2 border-opacity-25" style="font-size: 10px;" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                <i class="fas fa-plus"></i> Tambahkan alamat
+            </div>
+            <u id="daftaralamat" style="font-size: 10px;" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"
+                onclick="seeall()">Lihat semua
+                alamat</u>
+            <div class="mt-4" id="containproduk"></div>
+            <div class="mt-4">
+                <p>Do you have any discount code?</p>
+                <input class="form-control" placeholder="Enter code" type="text" />
+            </div>
+            <div class="mt-4">
+                <div class="d-flex justify-content-between">
+                    <p class="mb-0">Catatan</p>
+                    <p class="mb-0" id="catatan" onclick="tambahcatatan()" data-bs-toggle="modal"
+                        data-bs-target="#modalbutton">+ Tambahkan catatan</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p class="mb-0">Metode pembayaran</p>
+                    <select name="metodebayar" id="metodebayar" class="select form-control" onselect="pilihbayar()">
+                        <option value="Ovo">Ovo</option>
+                        <option value="Dana">Dana</option>
+                        <option value="Gopay">Gopay</option>
+                        <option value="Shopeepay">Shopeepay</option>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p class="mb-0">voucher/promo</p>
+                    <p class="mb-0" id="voucher">0</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p class="mb-0">Delivery</p>
+                    <p class="mb-0" id="ongkir">Free</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-0">Total</h5>
+                    <h5 class="mb-0" id="total">$98.00</h5>
+                </div>
+            </div>
+            <button class="btn btn-custom btn-block mt-4" onclick="konfircekout()">Checkout</button>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Daftar alamat</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div id="semuaalamat"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambahkan alamat</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="dataForm">
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Nama</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-sm" placeholder="Nama penerima" id="nama">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">No. hp</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-sm" placeholder="Nomor telepon" id="nope">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Kecamatan</span>
+                            <select class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-sm" onchange="pilihdesa()" id="kecamatan">
+                                <option value="Pilih kecamatan">Pilih kecamatan</option>
+                                <option value="Cidahu">Cidahu</option>
+                                <option value="Cicurug">Cicurug</option>
+                            </select>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Desa</span>
+                            <select class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-sm" id="desa">
+                            </select>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Alamat lengkap</span>
+                            <textarea type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-sm" placeholder="Alamat lengkap"
+                                id="alamatlengkap"></textarea>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Send Data">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Vertically centered modal -->
+    <div class="modal fade" id="modalbutton" tabindex="-1" aria-labelledby="modalbutton" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">Action</div>
+                <div class="modal-body" style="text-align: center;" id="btnAction">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="bootstrap-5.3.3-dist/js/bootstrap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Ambil email dari localStorage
+        let totalKeseluruhan = 0;
+        let datakeranjang = []
+        let dataalamat = ''
+        const userDataString = localStorage.getItem('user');
+        let email = '';
+        if (userDataString) {
+            const userData = JSON.parse(userDataString);
+            email = userData.email;
+        } else {
+            console.error('Tidak ada data yang ditemukan di local storage');
+        }
+        fetch('https://posdata-16c78-default-rtdb.firebaseio.com/keranjang.json')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('containproduk');
+                let hasilreturn = '';
+
+                let adaProduk = false; // Flag untuk cek apakah ada produk dengan email tersebut
+
+                for (let key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        const produk = data[key];
+
+                        // Cek apakah email sesuai
+                        if (produk.email === email) {
+                            adaProduk = true; // Set flag menjadi true jika produk dengan email ditemukan
+
+                            const pratotal = produk.harpro * produk.qty;
+                            totalKeseluruhan += pratotal;
+
+                            datakeranjang.push({ // Gunakan push untuk menambahkan elemen ke array
+                                'nampro': produk.nampro,
+                                'harpro': produk.harpro,
+                                'qty': produk.qty
+                            });
+
+                            hasilreturn += `
+<div class="d-flex justify-content-between align-items-center mb-3" id="product-${key}" data-bs-toggle="modal" onclick="btnact('${key}')" data-bs-target="#modalbutton">
+    <div class="d-flex align-items-center">
+        <img alt="Thai Spaghetti" class="rounded-circle" height="50" src="https://placehold.co/50x50" width="50" />
+        <div class="ml-4">
+            <p class="mb-0">${produk.nampro}</p>
+            <small class="text-muted">${produk.harpro} x${produk.qty}</small>
+        </div>
+    </div>
+    <strong class="mb-0">${pratotal}</strong>
+</div>
+`;
+                        }
+                    }
+                }
+
+                // Setelah loop selesai, cek apakah ada produk yang cocok
+                if (!adaProduk) {
+                    window.location.href = 'index.html'; // Arahkan jika tidak ada produk dengan email tersebut
+                    console.log('Tidak ada produk dengan email yang cocok, mengarahkan ke index.html');
+                }
+
+                // Tambahkan elemen untuk menampilkan total keseluruhan
+                hasilreturn += `
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <p>subtotal :</p>
+                <strong>${formatRupiah(totalKeseluruhan)}</strong>
+            </div>
+        `;
+
+                container.innerHTML = hasilreturn;
+
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+
+
+        let ongkir = 0; // Default ongkir
+        function btnact(key) {
+            console.log(key)
+            btnAction.innerHTML = `<button class="btn btn-primary">Edit</button>
+                    <button class="btn btn-danger" onclick="hapus('${key}')" data-bs-dismiss="modal">Delete</button>`;
+        }
+
+        // Pengecekan apakah ada alamat dengan email yang sesuai saat halaman diload
+        function seeall() {
+            const addressElement = document.getElementById('address');
+            const semuaalamat = document.getElementById('semuaalamat'); // Pastikan element ini ada di HTML
+
+            fetch('https://posdata-16c78-default-rtdb.firebaseio.com/alamat.json')
+                .then(response => response.json())
+                .then(data => {
+                    let alamatTersedia = false;
+                    let alamatHTML = '';
+                    let alamatterakhir = ''
+
+                    // Iterasi data untuk menemukan alamat dengan email yang sesuai
+                    for (let key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            const alamat = data[key];
+                            console.log(alamat);
+
+                            // Jika email cocok, tampilkan alamat
+                            if (alamat.email === email) {
+                                alamatterakhir = `<i class="fas fa-map-marker-alt"></i> ${alamat.nama}, ${alamat.nope}, ${alamat.kecamatan}, ${alamat.desa}, ${alamat.alamat_lengkap}`;
+                                alamatHTML += `
+                            <div id="${key}" onclick="ubahalamat('${key}', '${alamat.desa}', '${alamat.nama}', '${alamat.nope}', '${alamat.kecamatan}','${alamat.alamat_lengkap}')" class="listalamat border p-2 mb-2 border-opacity-25" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fas fa-map-marker-alt"></i> ${alamat.nama}, ${alamat.nope}, ${alamat.kecamatan}, ${alamat.desa}, ${alamat.alamat_lengkap}</div><br>
+                        `;
+                                alamatTersedia = true;
+                                hitungOngkir(alamat.desa);
+                            }
+                        }
+                    }
+
+                    // Jika ada alamat, tampilkan semua alamat
+                    if (alamatTersedia) {
+                        addressElement.innerHTML = alamatterakhir;
+                        semuaalamat.innerHTML = alamatHTML;
+                    } else {
+                        // Jika tidak ada alamat, tampilkan "Tambah alamat"
+                        addressElement.innerHTML = `
+                    <i class="fas fa-plus"></i> Tambahkan alamat
+                `;
+                        semuaalamat.innerHTML = '';
+                        ongkir = 0;
+                        updateTotal();
+                    }
+                })
+                .catch(error => {
+                    console.error('Terjadi masalah saat mem-fetch data alamat:', error);
+                });
+        };
+
+        function ubahalamat(key, desa, nama, nope, kecamatan, alamatLengkap) {
+            const pilihalamat = document.getElementById(`${key}`).innerHTML;
+            dataalamat = {
+                'nama': nama,
+                'nope': nope,
+                'desa': desa,
+                'kecamatan': kecamatan,
+                'alamatLengkap': alamatLengkap
+            };
+            address.innerHTML = pilihalamat;
+            console.log(desa)
+            hitungOngkir(desa);
+
+        }
+
+        // Fungsi pilih desa dan update ongkir
+        function pilihdesa() {
+            const kecamatan = document.getElementById('kecamatan').value;
+            const desa = document.getElementById('desa');
+            if (kecamatan === 'Cidahu') {
+                desa.innerHTML = `
+            <option value="Pilih desa">Pilih desa</option>
+            <option value="Girijaya">Girijaya</option>
+            <option value="Tangkil">Tangkil</option>
+            <option value="Cidahu">Cidahu</option>
+            <option value="Jayabakti">Jayabakti</option>
+            <option value="Bojongpari">Bojongpari</option>
+            <option value="Bakanpari">Bakanpari</option>
+        `;
+            } else if (kecamatan === 'Cicurug') {
+                desa.innerHTML = `
+            <option value="Pilih desa">Pilih desa</option>
+            <option value="Tenjoayu">Tenjoayu</option>
+            <option value="Mekarsari">Mekarsari</option>
+            <option value="Pasawahan">Pasawahan</option>
+            <option value="Nanggerang">Nanggerang</option>
+        `;
+            }
+        }
+
+        // Fungsi untuk menghitung ongkir berdasarkan desa
+        function hitungOngkir(desa) {
+            // Base ongkir awal
+            let baseOngkir = 0;
+            switch (desa) {
+                case 'Girijaya':
+                    ongkir = baseOngkir;
+                    break;
+                case 'Tangkil':
+                    ongkir = baseOngkir + 2000; // Ongkir naik Rp 2.000
+                    break;
+                case 'Cidahu':
+                    ongkir = baseOngkir + 4000; // Ongkir naik Rp 4.000
+                    break;
+                case 'Jayabakti':
+                    ongkir = baseOngkir + 6000; // Ongkir naik Rp 6.000
+                    break;
+                case 'Bojongpari':
+                    ongkir = baseOngkir + 8000; // Ongkir naik Rp 8.000
+                    break;
+                case 'Bakanpari':
+                    ongkir = baseOngkir + 10000; // Ongkir naik Rp 10.000
+                    break;
+                case 'Tenjoayu':
+                    ongkir = baseOngkir + 12000; // Ongkir naik Rp 12.000
+                    break;
+                case 'Mekarsari':
+                    ongkir = baseOngkir + 14000; // Ongkir naik Rp 14.000
+                    break;
+                case 'Pasawahan':
+                    ongkir = baseOngkir + 16000; // Ongkir naik Rp 16.000
+                    break;
+                case 'Nanggerang':
+                    ongkir = baseOngkir + 18000; // Ongkir naik Rp 18.000
+                    break;
+                default:
+                    ongkir = 0; // Jika desa tidak valid
+            }
+            updateTotal();
+        }
+        function updateTotal() {
+            document.getElementById('ongkir').innerHTML = `${formatRupiah(ongkir)}`;
+            document.getElementById('total').innerHTML = `${formatRupiah(totalKeseluruhan + ongkir)}`;
+        }
+        $('#dataForm').submit(function (e) {
+            e.preventDefault();
+
+            const nama = $('#nama').val();
+            const nope = $('#nope').val();
+            const kecamatan = $('#kecamatan').val();
+            const desa = $('#desa').val();
+            const alamat = $('#alamatlengkap').val();
+
+            // Format data yang akan dikirim ke API
+            const dataKirim = {
+                nama: nama,
+                nope: nope,
+                kecamatan: kecamatan,
+                desa: desa,
+                alamat_lengkap: alamat,
+                email: email
+            };
+
+            // URL API untuk mengirim data alamat
+            const apiUrl = 'https://posdata-16c78-default-rtdb.firebaseio.com/alamat.json'; // Ganti dengan URL API yang benar
+
+            // Mengirim data menggunakan fetch dengan method POST
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataKirim),
+            })
+                .then(response => response.json())  // Parsing response jadi JSON
+                .then(result => {
+                    console.log('Success:', result);
+                    $('#address').html(`
+            <i class="fas fa-map-marker-alt"></i> ${nama}, ${nope}, ${kecamatan}, ${desa}, ${alamat}
+        `);
+                    $('#exampleModal').modal('hide');
+                    hitungOngkir(desa);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        function formatRupiah(angka, prefix = 'Rp') {
+            const numberString = angka.toString().replace(/[^,\d]/g, '');
+            const split = numberString.split(',');
+            let sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            const ribuan = split[0].substr(sisa).match(/\d{3}/g);
+
+            if (ribuan) {
+                const separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix + ' ' + rupiah;
+        }
+        function hapus(id) {
+            const url = `https://posdata-16c78-default-rtdb.firebaseio.com/keranjang/${id}.json`;
+
+            fetch(url, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Hapus elemen produk dari DOM
+                        const productElement = document.getElementById(`product-${id}`);
+                        if (productElement) {
+                            const subtotal = parseInt(productElement.querySelector('strong').innerText.replace(/[^0-9]/g, '')); // Ambil subtotal produk
+                            totalKeseluruhan -= subtotal; // Kurangi total keseluruhan dengan subtotal produk
+                            productElement.remove(); // Hapus produk dari DOM
+
+                            // Hapus produk dari datakeranjang
+                            datakeranjang = datakeranjang.filter(item => item.nampro !== productElement.querySelector('p').innerText);
+                        }
+
+                        Swal.fire({
+                            title: "Berhasil",
+                            text: "Produk berhasil dihapus dari keranjang",
+                            icon: "success"
+                        });
+
+                        const modalElement = document.getElementById('modalbutton');
+                        const modalInstance = new bootstrap.Modal(modalElement);
+                        modalInstance.hide();
+
+                        // Update total keseluruhan
+                        updateTotal();
+
+                    } else {
+                        throw new Error('Gagal menghapus data.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Terjadi kesalahan: ', error);
+                });
+        }
+
+        function tambahcatatan() {
+            btnAction.innerHTML = `<input type="text" placeholder="Ex : pedasnya dikit" class="form-control" id="inpcatatan"/> <br> <span>Jika tidak ada catatan kosongin aja ya!!</span><br><button class="btn btn-primary" onclick="tambahkancatatan()" data-bs-dismiss="modal" aria-label="Close">Tambahkan catatan</button>`
+        }
+        function tambahkancatatan() {
+            const inp = inpcatatan.value;
+            
+            
+            catatan.innerHTML = inp;
+        }
+        function konfircekout() {
+            const metodebayar = document.getElementById('metodebayar').value;
+            const statusbayar = ' belum dibayar';
+            const tanggal = new Date()
+            if (dataalamat == '') {
+                Swal.fire({
+                    title: 'alamat masih kosong',
+                    icon: 'info'
+                });
+            } else {
+                const dataCheckout = {
+                    email: email,
+                    datakeranjang: datakeranjang,
+                    catatan: inpcatatan.value,
+                    ongkir: ongkir,
+                    alamat: dataalamat,
+                    pembayaran: metodebayar,
+                    statusbayar: statusbayar,
+                    tanggal: tanggal
+                };
+
+                // Kirim data ke API menggunakan fetch
+                fetch('https://posdata-16c78-default-rtdb.firebaseio.com/history.json', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataCheckout)
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log('Checkout berhasil:', result);
+                        // Ambil key dari response result
+                        const key = result.name; // Key biasanya ada di property 'name'
+                        console.log('Key dari data yang baru ditambahkan:', key);
+
+                        // Tampilkan pesan sukses
+                        Swal.fire({
+                            title: "Berhasil",
+                            text: `Checkout berhasil! Pesanan Anda sedang diproses. Key: ${key}`,
+                            icon: "success"
+                        });
+
+                        // Redirect atau tindakan setelah checkout sukses, misal pindah halaman
+                        window.location.href = `struk.html?key=${key}`;
+                    })
+                    .catch(error => {
+                        console.error('Error saat checkout:', error);
+                        Swal.fire({
+                            title: "Gagal",
+                            text: "Terjadi kesalahan saat melakukan checkout. Silakan coba lagi.",
+                            icon: "error"
+                        });
+                    });
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>
