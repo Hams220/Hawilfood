@@ -1,347 +1,290 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>User Demo</title>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <!-- Animate.css -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-
-    .imgbanner {
-      width: 100%;
-      height: auto;
-    }
-
-    .flex {
-      display: flex;
-      justify-content: space-evenly;
-      padding: 20px;
-      flex-wrap: wrap;
-    }
-
-    .cardbutton {
-      width: 60px;
-      height: 60px;
-      border: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #495057;
-      background-color: #ffffff;
-      border-radius: 15px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .cardbutton:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
-    }
-
-    .fas {
-      font-size: 20px;
-    }
-
-    .buttonflex {
-      background-color: #ffffff;
-      border-radius: 20px;
-    }
-
-    .btn i {
-      font-size: 15px;
-    }
-
-    .rounded {
-      width: 60px;
-      height: 60px;
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .rounded:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
-    }
-
-    .produkdisplay {
-      margin-bottom: 20px;
-    }
-
-    .imgtroli {
-      width: 40px;
-      height: auto;
-    }
-
-    /* Additional Styling */
-    .card {
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    
-
-      .rounded {
-        width: 50px;
-        height: 50px;
-      }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap-5.3.3-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <title>Hawil food</title>
 </head>
 
 <body>
-  <!-- Carousel -->
-  <div id="carouselExampleSlidesOnly" class="carousel slide animate__animated animate__fadeIn" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="https://i.ibb.co.com/D97xQ6Z/Banner1.jpg" class="d-block imgbanner w-100" alt="Banner 1" loading="lazy">
-      </div>
-      <div class="carousel-item">
-        <img src="https://i.ibb.co.com/prDKyBQ/Banner2.jpg" class="d-block imgbanner w-100" alt="Banner 2" loading="lazy">
-      </div>
-      <div class="carousel-item">
-        <img src="https://i.ibb.co.com/D97xQ6Z/Banner1.jpg" class="d-block imgbanner w-100" alt="Banner 3" loading="lazy">
-      </div>
-    </div>
-  </div>
-  <br>
-
-  <!-- Button Flex -->
-  <div class="container">
-    <div class="buttonflex flex animate__animated animate__fadeInUp">
-      <div>
-        <div class="card cardbutton border border-primary">
-          <i class="fas fa-mobile-alt"></i>
+    <style>
+    </style>
+    <section id="home">
+        <div class="bg-nav" id="bgnav">
+            <p>HawilFood</p>
+            <h5>Ayo belanja makanan dan minuman buat kamu yang ada di area Cidahu</h5>
+            <a href="#" style="color: white;">Cek promo <i class="bi bi-arrow-right-circle"></i> </a>
         </div>
-        <center>Pulsa</center>
-      </div>
-      <div>
-        <div class="card cardbutton border border-primary">
-          <i class="fas fa-utensils"></i>
-        </div>
-        <center>Food</center>
-      </div>
-      <div>
-        <div class="card cardbutton border border-primary">
-          Hawil <span>+</span>
-        </div>
-        <center>Hawil +</center>
-      </div>
-      <div>
-        <div class="card cardbutton border border-primary" onclick="window.location.href='riwayatuser.html'">
-          <span>&gt;</span>
-        </div>
-        <center>More</center>
-      </div>
-    </div>
-    <br>
-  </div>
-
-  <!-- Produk Container -->
-  <div class="container flex produk flex animate__animated animate__fadeInUp"></div>
-
-  <!-- Shopping Cart Button -->
-  <button class="btn btn-primary rounded rounded-circle animate__animated animate__bounceIn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    <i class="fas fa-shopping-cart"></i>
-  </button>
-  <button class="btn btn-danger ms-3" onclick="logout()">Logout</button>
-
-  <!-- Modal -->
-  <div class="modal fade animate__animated animate__zoomIn" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Keranjang</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="keranjang">
-          <!-- Keranjang Items akan dimasukkan di sini -->
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="checkout()">Checkout</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <!-- JavaScript -->
-  <script>
-    function logout() {
-      localStorage.removeItem('user');
-      window.location.href = 'loginuser.html';
-    }
-
-    window.onload = function () {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (!user || !user.email) {
-        window.location.href = 'loginuser.html';
-        return;
-      }
-      fetchProduk();
-      fetchKeranjang();
-    };
-
-    let datafinal = []
-    async function fetchProduk() {
-      try {
-        const response = await fetch('https://posdata-16c78-default-rtdb.firebaseio.com/produk.json');
-        const data = await response.json();
-        if (!data) return;
-
-        const produkContainer = document.querySelector('.produk');
-        produkContainer.innerHTML = ''; // Clear existing content
-
-        for (let key in data) {
-          const produk = data[key];
-          const produkDiv = document.createElement('div');
-          produkDiv.className = 'card produkdisplay animate__animated animate__fadeInUp';
-          produkDiv.style.width = '10rem';
-
-          produkDiv.innerHTML = `
-            <img src="https://i.ibb.co.com/yh4P9qZ/id-11134207-7qul3-lki1a5e8fpucd3.jpg" class="card-img-top" alt="${produk.namaProduk}" loading="lazy">
-            <div class="card-body">
-              <strong class="card-title">${produk.namaProduk}</strong>
-              <p class="card-text">${rupiah(produk.hargaProduk)}</p>
-              <button class="btn btn-success" style="font-size:12px;" onclick="addToCart('${key}', '${produk.namaProduk}', ${produk.hargaProduk})">
-                <i class="fas fa-shopping-cart"></i> Add to Cart
-              </button>
+        <div class="card cardsaldo" id="cardsaldo">
+            <div class="flex">
+                <div>
+                    <p>Saldo</p><strong>Rp. 0</strong>
+                </div>
+                <div>
+                    <button class="btn btn-primary">Topup</button>
+                    <button class="btn btn-primary">History</button>
+                </div>
+            </div><br>
+            <hr><br>
+            <div class="flex" id="cardvoucher">
+                <div class="card cardd">
+                    <span>voucher</span>
+                    <strong>0</strong>
+                </div>
+                <div class="card cardd">
+                    <span>voucher</span>
+                    <strong>0</strong>
+                </div>
+                <div class="card cardd">
+                    <span>voucher</span>
+                    <strong>0</strong>
+                </div>
             </div>
-          `;
-
-          produkContainer.appendChild(produkDiv);
-        }
-      } catch (error) {
-        console.error('Error fetching produk:', error);
-      }
-    }
-
-    async function addToCart(key, namaProduk, harga) {
-      try {
-        const response = await fetch('https://posdata-16c78-default-rtdb.firebaseio.com/keranjang.json');
-        const cart = await response.json() || {};
-
-        cart[key] = cart[key] || { namaProduk, harga, qty: 0 };
-        cart[key].qty += 1;
-
-        await fetch('https://posdata-16c78-default-rtdb.firebaseio.com/keranjang.json', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(cart)
-        });
-
-        alert('Produk ditambahkan ke keranjang!');
-        fetchKeranjang();
-      } catch (error) {
-        console.error('Error adding to cart:', error);
-      }
-    }
-
-    async function fetchKeranjang() {
-      try {
-        const response = await fetch('https://posdata-16c78-default-rtdb.firebaseio.com/keranjang.json');
-        const data = await response.json();
-        if (!data) return;
-
-        datafinal = []; // Clear existing datafinal
-
-        const keranjangContainer = document.getElementById('keranjang');
-        keranjangContainer.innerHTML = ''; // Clear existing content
-
-        for (let key in data) {
-          const produk = data[key];
-          datafinal.push({
-            keypro: key,
-            nampro: produk.namaProduk,
-            harpro: produk.harga,
-            qtypro: produk.qty
-          });
-
-          const produkDiv = document.createElement('div');
-          produkDiv.className = 'card border border-primary mb-2 animate__animated animate__fadeIn';
-
-          produkDiv.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center p-2">
-              <div class="d-flex align-items-center">
-                <img class="imgtroli me-2" src="https://i.ibb.co/yh4P9qZ/id-11134207-7qul3-lki1a5e8fpucd3.jpg" alt="${produk.namaProduk}" loading="lazy">
-                <span>${produk.namaProduk}</span>
-              </div>
-              <b>${rupiah(produk.harga)}</b>
-              <div class="d-flex align-items-center">
-                <button class="btn btn-outline-primary btn-sm" onclick="updateQty('${key}', ${produk.qty - 1})">-</button>
-                <span class="mx-2">${produk.qty}</span>
-                <button class="btn btn-outline-primary btn-sm" onclick="updateQty('${key}', ${produk.qty + 1})">+</button>
-              </div>
+        </div>
+        <div class="garis">Preferred</div>
+        <div class="container produk d-flex align-items-center justify-content-center min-vh-100 " id="containproduk">
+        </div>
+        <br><br>
+        <center>
+            <div id="keranjang" class="keranjang shadow bg-primary" onclick="window.location.href='cekout.html'">
+                <div class="flex" style="justify-content: left; gap: 10px;"><b class="bi bi-cart3"></b>
+                    <strong id="namakeranjang" style="font-size: 16px;">keranjang</strong>
+                </div>
             </div>
-          `;
+        </center>
+    </section>
 
-          keranjangContainer.appendChild(produkDiv);
+
+
+
+    <script src="bootstrap-5.3.3-dist/js/bootstrap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        const userDataString = localStorage.getItem('user');
+        let email = ''
+        if (userDataString) {
+            const userData = JSON.parse(userDataString);
+            email = userData.email
+        } else {
+            console.error('Tidak ada data yang ditemukan di local storage');
         }
-      } catch (error) {
-        console.error('Error fetching keranjang:', error);
-      }
-    }
-
-    async function updateQty(key, newQty) {
-      if (newQty < 1) {
-        // Hapus produk dari keranjang
-        await fetch(`https://posdata-16c78-default-rtdb.firebaseio.com/keranjang/${key}.json`, {
-          method: 'DELETE',
-        });
-        // Hapus juga dari datafinal
-        datafinal = datafinal.filter(item => item.keypro !== key);
-      } else {
-        // Update qty produk di keranjang
-        await fetch(`https://posdata-16c78-default-rtdb.firebaseio.com/keranjang/${key}.json`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ qty: newQty }),
-        });
-        // Update qty di datafinal
-        const item = datafinal.find(item => item.keypro === key);
-        if (item) {
-          item.qtypro = newQty;
+        console.log(email)
+        window.onscroll = function () {
+            let bgnav = document.getElementById('bgnav');
+            let scrollvalue = window.scrollY;
+            if (scrollvalue > 50) {
+                bgnav.style.height = '200px';
+                cardsaldo.style.height = '100px';
+                cardsaldo.style.top = '150px'
+                cardvoucher.style.display = 'none';
+            } else {
+                bgnav.style.height = '300px';
+                cardsaldo.style.height = '200px';
+                cardsaldo.style.top = '180px';
+                cardvoucher.style.display = 'flex';
+            }
         }
-      }
 
-      fetchKeranjang(); // Refresh keranjang
-    }
+        fetch('https://posdata-16c78-default-rtdb.firebaseio.com/produk.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                const container = document.getElementById('containproduk');
+                let hasilreturn = '';
+                for (let key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        const produk = data[key];
+                        console.log(produk);
+                        hasilreturn += `
+                            <div class="card card-custom shadow-lg" style="max-width: 24rem;">
+                                <div class="position-relative">
+                                    <img src="image/seblakceker.jpeg"
+                                        alt="A cup of coffee with two chocolate cookies on a wooden coaster" class="card-img-top" width="400"
+                                        height="300">
+                                    <i class="fas fa-star position-absolute top-0 end-0 m-3 text-muted"></i>
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="card-title h4">${produk.namaProduk}</h2>
+                                    <p class="card-text text-muted">Set of coffee and chocolate cookies as a top tier among our customers and a
+                                        perfect way to start your day.</p>
+                                    <p class="font-weight-bold">Can be added:</p>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-secondary text-white">Original</span>
+                                        <span class="badge bg-success text-white">Level 1</span>
+                                        <span class="badge bg-danger text-white">Level 2</span>
+                                        <span class="badge bg-warning text-dark">Level 3</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-4">
+                                        <span class="h5 mb-0">${produk.harga}</span>
+                                        <button class="btn btn-dark btn-custom d-flex align-items-center" onclick="addToCart('${key}', '${produk.namaProduk}', '${produk.harga}')">
+                                            tambah
+                                            <i class="fas fa-chevron-right ms-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>`;
+                    }
+                }
+                container.innerHTML = hasilreturn;
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
 
-    function checkout() {
-      localStorage.setItem('datafinal', JSON.stringify(datafinal));
-      window.location.href = 'test.html';
-    }
+        function addToCart(key, nampro, harpro) {
+            fetch('https://posdata-16c78-default-rtdb.firebaseio.com/keranjang.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const keranjangItems = data || {};
+                    let itemExists = false;
+                    let itemKey = '';
 
-    function rupiah(angka) {
-      return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR'
-      }).format(angka);
-    }
-  </script>
+                    // Check if the product is already in the cart
+                    for (let k in keranjangItems) {
+                        if (keranjangItems.hasOwnProperty(k) && keranjangItems[k].email === email && keranjangItems[k].key === key) {
+                            itemExists = true;
+                            itemKey = k;
+                            break;
+                        }
+                    }
+
+                    if (itemExists) {
+                        // Update qty if item exists
+                        const existingQty = keranjangItems[itemKey].qty || 1;
+                        const updatedQty = existingQty + 1;
+                        fetch(`https://posdata-16c78-default-rtdb.firebaseio.com/keranjang/${itemKey}.json`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ qty: updatedQty })
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    Swal.fire({
+                                        title: 'Berhasil!',
+                                        text: 'Jumlah produk di keranjang telah diperbarui.',
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    });
+                                    loadkeranjang();
+                                } else {
+                                    Swal.fire({
+                                        title: 'Gagal!',
+                                        text: 'Terjadi kesalahan saat memperbarui produk di keranjang.',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: `Terjadi kesalahan: ${error.message}`,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            });
+                    } else {
+                        // Add new product to cart if it doesn't exist
+                        const data = {
+                            email: email,
+                            key: key,
+                            nampro: nampro,
+                            harpro: harpro,
+                            qty: 1
+                        };
+                        fetch('https://posdata-16c78-default-rtdb.firebaseio.com/keranjang.json', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    Swal.fire({
+                                        title: 'Berhasil!',
+                                        text: 'Produk berhasil ditambahkan ke keranjang.',
+                                        icon: 'success',
+                                        confirmButtonText: 'OK'
+                                    });
+                                    loadkeranjang();
+                                } else {
+                                    Swal.fire({
+                                        title: 'Gagal!',
+                                        text: 'Terjadi kesalahan saat menambahkan produk ke keranjang.',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: `Terjadi kesalahan: ${error.message}`,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `Terjadi kesalahan: ${error.message}`,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+        }
+
+        function loadkeranjang() {
+            fetch('https://posdata-16c78-default-rtdb.firebaseio.com/keranjang.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data) {
+                        // Filter data berdasarkan email
+                        const filteredData = Object.values(data).filter(item => item.email === email);
+
+                        // Tampilkan jumlah item di keranjang
+                        namakeranjang.innerHTML = `${filteredData.length} Item`;
+                        console.log('Jumlah item di keranjang:', filteredData.length);
+                    } else {
+                        // Jika data kosong, tampilkan pesan yang sesuai
+                        namakeranjang.innerHTML = '0 Item';
+                        console.log('Data kosong atau tidak ada item di keranjang.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Terjadi masalah dengan operasi fetch:', error);
+                });
+        }
+
+        loadkeranjang();
+    </script>
+
 </body>
 
 </html>
