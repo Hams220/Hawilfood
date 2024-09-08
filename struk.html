@@ -8,26 +8,25 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-
-<body>
     <style>
         .flex {
             display: flex;
             justify-content: space-between;
         }
-
         .hide {
             display: none;
         }
     </style>
+</head>
+
+<body>
     <section class="container">
         <div id="history-container" class="mt-3">
             <!-- Data transaksi akan dimuat di sini -->
         </div>
-
         <div id="strukpembayaran"></div>
     </section>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const apiUrl = 'https://posdata-16c78-default-rtdb.firebaseio.com/history.json';
@@ -40,14 +39,12 @@
 
         async function fetchHistoryData() {
             try {
-                // Get 'key' from URL
                 const key = getUrlParameter('key');
                 if (!key) {
                     console.error('Parameter key tidak ditemukan di URL.');
                     return;
                 }
 
-                // Fetch data from Firebase
                 const response = await fetch(apiUrl);
                 const data = await response.json();
 
@@ -55,11 +52,15 @@
                     const historyContainer = document.getElementById('history-container');
                     historyContainer.innerHTML = ''; // Clear existing content
 
-                    // Filter data based on key
                     Object.keys(data).forEach(k => {
                         const transaction = data[k];
                         if (k === key) {
-                            console.log(data)
+                            console.log(data);
+                            const produkList = Array.isArray(transaction.datakeranjang) ? transaction.datakeranjang : [];
+                            const totalSum = produkList.reduce((accumulator, x) => {
+                                const total1 = x.harpro * x.qty;
+                                return accumulator + total1;
+                            }, 0);
                             let norek = "";
                             let alertinfo = ``;
                             let trakingproses = '';
@@ -73,11 +74,11 @@
                             switch (transaction.pembayaran) {
                                 case 'Ovo':
                                 case 'Dana':
-                                    norek = '081462328581 a/n Muhammad ilham aripin';
+                                    norek = '081462328581 a/n Muhammad Ilham Aripin';
                                     break;
                                 case 'Gopay':
                                 case 'Shopeepay':
-                                    norek = '085720960371 a/n Muhammad ilham aripin';
+                                    norek = '085720960371 a/n Muhammad Ilham Aripin';
                                     break;
                                 default:
                                     console.warn('Metode pembayaran tidak dikenali:', transaction.pembayaran);
@@ -87,14 +88,13 @@
                             // Handle status pembayaran
                             switch (transaction.statusbayar.toLowerCase()) {
                                 case 'belum dibayar':
-                                    alertinfo = `Silahkan lakukan Transfer sebesar <strong>${transaction.totalBayar}</strong> ke nomor berikut`;
+                                    alertinfo = `Silahkan lakukan Transfer sebesar <strong>${totalSum + transaction.ongkir}</strong> ke nomor berikut`;
                                     break;
                                 case 'pengecekan':
-                                    alertinfo = `Pembayaran anda sebesar <strong>${transaction.totalBayar}</strong> sedang dalam proses pengecekan`;
+                                    alertinfo = `Pembayaran anda sebesar <strong>${totalSum + transaction.ongkir}</strong> sedang dalam proses pengecekan`;
                                     showButton = false; // Hide the confirm button
                                     break;
                                 case 'lunas':
-                                    //alertinfo = transaction.traking;
                                     showButton = false;
                                     showTraking = true;
                                     break;
@@ -103,23 +103,18 @@
                                     break;
                             }
 
+                            // Handle status pengiriman
                             switch (transaction.statuskirim) {
                                 case 'dalam proses':
                                     alertinfo = `Sedang proses : <strong>${transaction.traking}</strong>`;
-                                    trakingproses =  `font-weight: bold;`;
-                                    trakingkirim = '';
-                                    trakingselesai = '';
+                                    trakingproses = 'font-weight: bold;';
                                     break;
-                                case 'dalam pengiriman' :
-                                    alertinfo = `Paket anda sedang dalam perjalanan : <strong>${transaction.traking}</strong`;
-                                    trakingproses =  ``;
+                                case 'dalam pengiriman':
+                                    alertinfo = `Paket anda sedang dalam perjalanan : <strong>${transaction.traking}</strong>`;
                                     trakingkirim = 'font-weight: bold;';
-                                    trakingselesai = '';
                                     break;
                                 case 'selesai':
                                     alertinfo = `Pesanan selesai : <strong>${transaction.traking}</strong>`;
-                                    trakingproses =  ``;
-                                    trakingkirim = '';
                                     trakingselesai = 'font-weight: bold;';
                                     tampilkanbutton = true;
                                     break;
@@ -130,76 +125,80 @@
 
                             // Create transaction div
                             const transactionDiv = document.createElement('div');
-                            const produkList = Array.isArray(transaction.produk) ? transaction.produk : [];
+                            
+                            hasiltoalSum = totalSum;
 
                             transactionDiv.innerHTML = `
-                        <div class="card border border-primary mb-3" style="padding: 10px;">
-                            <h5>${k}</h5><hr>
-                            <div class="flex">
-                                <p>Nama penerima :</p>
-                                <p>${transaction.namaPenerima}</p>
-                            </div>
-                            <div class="flex">
-                                <p>Nomor telepon :</p>
-                                <p>${transaction.nomorTelepon}</p>
-                            </div>
-                            <div class="flex">
-                                <p>Alamat :</p>
-                                <p>${transaction.alamatLengkap}, ${transaction.desa}, ${transaction.kecamatan}</p>
-                            </div>
-
-                            <h5>Rincian pesanan :</h5>
-                            ${produkList.map(produk => `
-                                <div class="flex" style="gap: 10px;">
-                                    <input type="text" class="form-control" value="${produk.nampro}" disabled>
-                                    <input type="text" class="form-control" value="${produk.harpro}" disabled>
-                                    <input type="text" class="form-control" value="${produk.qtypro}" disabled>
+                                <div class="card border border-primary mb-3" style="padding: 10px;">
+                                    <h5>${k}</h5><hr>
+                                    <div class="flex">
+                                        <p>Nama penerima :</p>
+                                        <p>${transaction.alamat.nama}</p>
+                                    </div>
+                                    <div class="flex">
+                                        <p>Nomor telepon :</p>
+                                        <p>${transaction.alamat.nope}</p>
+                                    </div>
+                                    <div class="flex">
+                                        <p>Alamat :</p>
+                                        <p>${transaction.alamat.alamatLengkap}, ${transaction.alamat.desa}, ${transaction.alamat.kecamatan}</p>
+                                    </div>
+                                    <h5>Rincian pesanan :</h5>
+                                    ${produkList.map(datakeranjang => `
+                                        <div class="flex" style="gap: 10px;">
+                                            <input type="text" class="form-control" value="${datakeranjang.nampro}" disabled>
+                                            <input type="text" class="form-control" value="${datakeranjang.harpro}" disabled>
+                                            <input type="text" class="form-control" value="${datakeranjang.qty}" disabled>
+                                        </div>
+                                    `).join('<br/>')}
+                                    <div class="flex">
+                                        <p>Ongkir :</p>
+                                        <p>${transaction.ongkir}</p>
+                                    </div>
+                                    <div class="flex">
+                                        <p>Voucher/promo:</p>
+                                        <p>-</p>
+                                    </div>
+                                    <hr>
+                                    <div class="flex">
+                                        <h5>Total :</h5>
+                                        <h5>${totalSum + transaction.ongkir}</h5>
+                                    </div>
+                                    <p class="card-text"><strong>Waktu Transaksi:</strong> ${new Date(transaction.waktuTransaksi).toLocaleString()}</p>
                                 </div>
-                            `).join('<br/>')}
-                            <div class="flex">
-                                <p>Ongkir :</p>
-                                <p>${transaction.ongkir}</p>
-                            </div>
-                            <div class="flex">
-                                <p>Voucher/promo:</p>
-                                <p>-</p>
-                            </div>
-                            <hr>
-                            <div class="flex">
-                                <h5>Total :</h5>
-                                <h5>${transaction.totalBayar}</h5>
-                            </div>
-                            <p class="card-text"><strong>Waktu Transaksi:</strong> ${new Date(transaction.waktuTransaksi).toLocaleString()}</p>
-                        </div>
-                        <div class="card mt-3 border border-primary" style="padding: 10px;">
-                            <h5>Rincian Pembayaran :</h5>
-                            <div class="flex">
-                                <p>Metode Pembayaran :</p>
-                                <p>${transaction.pembayaran}</p>
-                            </div>
-                            <div class="flex">
-                                <p>Status bayar :</p>
-                                <p>${transaction.statusbayar}</p>
-                            </div>
-                            <div class="flex">
-                                <p>Nomor rekening :</p>
-                                <p>${norek}</p>
-                            </div>
-                            ${showTraking ? `<h5>Rincian pengiriman :</h5>
-            <div class="flex" style="justify-content: space-evenly;">
-                <div style="text-align: center;${trakingproses}"><h1 class="bi bi-arrow-clockwise" ></h1><i>Sedang proses</i></div>
-                <div style="text-align: center;${trakingkirim}"><h1 class="bi bi-box-seam" ></h1><i>Dalam pengiriman</i></div>
-                <div style="text-align: center;${trakingselesai}"><h1 class="bi bi-bag-check" ></h1><i>Sudah diterima</i></div>
-            </div>` : ''}
-                            <div class="alert alert-info">${alertinfo}</div>
-                            ${showButton ? `
-                                <button class="btn btn-primary" id="btnkonfirm" onclick="konfirm('${key}')">Konfirmasi pembayaran</button>
-                            ` : ''}
-                            
-                            <a href="#">Butuh bantuan?</a>
-                        </div><br>
-                        <div class="flex" style="justify-content:space-between;width:50%;"><button class="btn btn-primary">cetak</button><button class="btn btn-success">beri ulasan</button></div>
-                    `;
+                                <div class="card mt-3 border border-primary" style="padding: 10px;">
+                                    <h5>Rincian Pembayaran :</h5>
+                                    <div class="flex">
+                                        <p>Metode Pembayaran :</p>
+                                        <p>${transaction.pembayaran}</p>
+                                    </div>
+                                    <div class="flex">
+                                        <p>Status bayar :</p>
+                                        <p>${transaction.statusbayar}</p>
+                                    </div>
+                                    <div class="flex">
+                                        <p>Nomor rekening :</p>
+                                        <p>${norek}</p>
+                                    </div>
+                                    ${showTraking ? `
+                                        <h5>Rincian pengiriman :</h5>
+                                        <div class="flex" style="justify-content: space-evenly;">
+                                            <div style="text-align: center; ${trakingproses}"><h1 class="bi bi-arrow-clockwise"></h1><i>Sedang proses</i></div>
+                                            <div style="text-align: center; ${trakingkirim}"><h1 class="bi bi-box-seam"></h1><i>Dalam pengiriman</i></div>
+                                            <div style="text-align: center; ${trakingselesai}"><h1 class="bi bi-bag-check"></h1><i>Sudah diterima</i></div>
+                                        </div>
+                                    ` : ''}
+                                    <div class="alert alert-info">${alertinfo}</div>
+                                    ${showButton ? `
+                                        <button class="btn btn-primary" id="btnkonfirm" onclick="konfirm('${key}')">Konfirmasi pembayaran</button>
+                                    ` : ''}
+                                    <a href="#">Butuh bantuan?</a>
+                                </div><br>
+                                <div class="flex" style="justify-content: space-between; width: 50%;">
+                                    <button class="btn btn-primary">Cetak</button>
+                                    <button class="btn btn-success">Beri ulasan</button>
+                                </div>
+                            `;
 
                             historyContainer.appendChild(transactionDiv);
                         }
@@ -212,9 +211,6 @@
             }
         }
 
-        // Fetch and display history data on page load
-        fetchHistoryData();
-
         async function konfirm(key) {
             const dataUpdate = {
                 statusbayar: "Pengecekan"
@@ -223,7 +219,7 @@
 
             try {
                 const response = await fetch(`${apiUrl}/${key}.json`, {
-                    method: 'PATCH',  // Menggunakan PATCH untuk mengupdate sebagian data
+                    method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -255,6 +251,9 @@
                 });
             }
         }
+
+        // Fetch and display history data on page load
+        fetchHistoryData();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
