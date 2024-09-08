@@ -1,0 +1,77 @@
+body{
+    height: 1000px;
+}
+.bg-nav {
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    background-image: url('image/bgnavbar1.jpg');
+    background-repeat: no-repeat;
+    background-size: auto;
+    height: 300px;
+    border-radius: 0px 0px 30px 30px;
+    color: white;
+    padding:20px;
+    transition: height 0.3s ease;
+}
+.bg-nav h5{
+    width: 50%;
+}
+.cardsaldo{
+    z-index: 1000;
+    width: 100%;
+    padding: 20px;
+    height: 200px;
+    border-radius: 30px;
+    position: fixed;
+    top: 200px;
+    transition: height 0.3s ease;
+}
+.flex{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.cardd{
+    border: 0.8px solid rgb(185, 185, 185);
+    width: 90px;
+    padding: 5px;
+    text-align: center;
+}
+.produk{
+    margin-top: 380px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.card-img-top {
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+}
+.card-body h5, .card-body button{
+    font-size: 12px;
+}
+.keranjang{
+    height: 60px;
+    width: 35%;
+    position: fixed;
+    border-radius: 20px;
+    padding: 10px;
+    bottom: 10px;
+    font-size: 30px;
+    color: white;
+}
+.keranjang span{
+    font-size: 16px;
+}
+.delete-btn {
+    border: none;
+    background: none;
+    color: black;
+    font-size: 1.5em;
+}
+.listalamat{
+    border-radius: 10px;
+}
+.listalamat:hover{
+    background-color: #d5d5d5;
+}
